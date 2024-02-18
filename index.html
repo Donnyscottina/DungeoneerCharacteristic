@@ -55,6 +55,7 @@
             font-size: 16px;
             margin: 5px;
             text-align: center;
+            font-weight: bold;
             width: 100%;
         }
 
@@ -98,7 +99,8 @@
         /* Media Queries for Mobile */
         @media only screen and (max-width: 600px) {
             .card {
-                max-width: 80%;
+                max-width: 100%;
+                padding: 10px;
             }
 
             .stat {
@@ -108,11 +110,18 @@
             .input-container {
                 width: 100%;
             }
+            
 
             input[type="number"] {
                 width: 100%;
                 margin-right: 0;
+                padding: 16px;
             }
+            .icon {
+                width: 40px;
+    height: auto;
+            margin-right: 0px;
+        }
         }
     </style>
 </head>
