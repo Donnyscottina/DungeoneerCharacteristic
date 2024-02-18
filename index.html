@@ -19,7 +19,7 @@
 
         .card {
             max-width: 500px;
-            background-color: #fff;
+            background-color: #ffffff; /* Добавлен цвет фона */
             padding: 20px;
             border: 10px solid #000;
             border-radius: 20px;
@@ -44,7 +44,7 @@
         .input-container {
             display: flex;
             align-items: center;
-            flex-grow: 1; /* Add this to make it expand */
+            flex-grow: 1;
         }
 
         input[type="number"] {
@@ -65,18 +65,27 @@
 
         .btn-container {
             display: flex;
-            flex-wrap: wrap; /* Add this to wrap buttons */
-            justify-content: center; /* Add this to center buttons */
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .btn {
             padding: 10px 10px;
             border: 1px solid #000;
-            background-color: #fff;
-            color: #000;
             border-radius: 10px;
             cursor: pointer;
-            margin: 5px; /* Add this to create space between buttons */
+            margin: 5px;
+        }
+
+        /* Цвета кнопок */
+        .btn.positive {
+            background-color: #00ff00; /* Зеленый цвет для положительных значений */
+            color: #000000;
+        }
+
+        .btn.negative {
+            background-color: #ff0000; /* Красный цвет для отрицательных значений */
+            color: #ffffff;
         }
 
         .btn:hover {
@@ -91,17 +100,16 @@
             }
 
             .stat {
-                flex-direction: column; /* Change flex direction to column for mobile */
+                flex-direction: column;
             }
 
             .input-container {
-                width: 100%; /* Make input container take full width */
+                width: 100%;
             }
 
             input[type="number"] {
-                width: 100%; /* Subtract margin-right from full width */
-                margin-right: 0; /* Remove margin-right */
-               /* Add margin-bottom to create space between input and buttons */
+                width: 100%;
+                margin-right: 0;
             }
         }
     </style>
@@ -126,28 +134,28 @@
             inputContainer.classList.add('input-container');
             const icon = document.createElement('img');
             icon.classList.add('icon');
-            icon.src = imagePath; // Установите путь к изображению
-            icon.alt = name; // Установите альтернативный текст для изображения
+            icon.src = imagePath;
+            icon.alt = name;
             const input = document.createElement('input');
             input.setAttribute('type', 'number');
-            input.setAttribute('id', name); // Set id for input element
+            input.setAttribute('id', name);
             input.setAttribute('value', '0');
-            inputContainer.appendChild(input); // Move input to input container
-            const btnValues = [-3, -1, 1, 3]; // Remove -2 and +2
+            inputContainer.appendChild(input);
+            const btnValues = [-3, -1, 1, 3];
             btnValues.forEach(value => {
                 const btn = document.createElement('button');
                 btn.classList.add('btn');
                 btn.textContent = value > 0 ? "+" + value : value;
+                btn.className = value > 0 ? 'positive btn' : 'negative btn'; /* Добавлено определение класса для кнопки в зависимости от значения */
                 btn.onclick = function() {
                     changeValue(name, value);
                 };
-                inputContainer.appendChild(btn); // Append buttons to input container
+                inputContainer.appendChild(btn);
             });
             stat.appendChild(icon);
-            stat.appendChild(label); // Append label
-            stat.appendChild(inputContainer); // Append input container to stat
+            stat.appendChild(label);
+            stat.appendChild(inputContainer);
             container.appendChild(stat);
-            // Remove additional button container
         }
 
         function changeValue(id, value) {
@@ -162,7 +170,6 @@
         createCharacteristicBlock("Здоровье","Images/health.png");
         createCharacteristicBlock("Риск", "Images/risk.png");
         createCharacteristicBlock("Слава", "Images/slava.png");
-       
     </script>
 </body>
 </html>
