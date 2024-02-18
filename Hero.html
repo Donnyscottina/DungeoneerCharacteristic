@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeoneer Character Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .card {
+            max-width: 500px;
+            background-color: #fff;
+            padding: 20px;
+            border: 10px solid #000;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .stats {
+            margin-top: 20px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            flex-grow: 1; /* Add this to make it expand */
+        }
+
+        input[type="number"] {
+            padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    font-size: 16px;
+    margin: 5px;
+    text-align: center;
+            width: 100%;
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap; /* Add this to wrap buttons */
+            justify-content: center; /* Add this to center buttons */
+        }
+
+        .btn {
+            padding: 10px 10px;
+            border: 1px solid #000;
+            background-color: #fff;
+            color: #000;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 5px; /* Add this to create space between buttons */
+        }
+
+        .btn:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Media Queries for Mobile */
+        @media only screen and (max-width: 600px) {
+            .card {
+                max-width: 80%;
+            }
+
+            .stat {
+                flex-direction: column; /* Change flex direction to column for mobile */
+            }
+
+            .input-container {
+                width: 100%; /* Make input container take full width */
+            }
+
+            input[type="number"] {
+                width: 100%; /* Subtract margin-right from full width */
+                margin-right: 0; /* Remove margin-right */
+               /* Add margin-bottom to create space between input and buttons */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 style="text-align: center;">Dungeoneer Character Sheet</h1>
+        <div class="stats" id="statsContainer">
+            <!-- Characteristic blocks will be inserted here -->
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script>
+        function createCharacteristicBlock(name, iconClass) {
+            const container = document.getElementById('statsContainer');
+            const stat = document.createElement('div');
+            stat.classList.add('stat');
+            const label = document.createElement('label');
+            label.textContent = name + ":";
+            const inputContainer = document.createElement('div');
+            inputContainer.classList.add('input-container');
+            const icon = document.createElement('i');
+            icon.classList.add('icon', 'fas', iconClass);
+            const input = document.createElement('input');
+            input.setAttribute('type', 'number');
+            input.setAttribute('id', name); // Set id for input element
+            input.setAttribute('value', '0');
+            inputContainer.appendChild(input); // Move input to input container
+            const btnValues = [-3, -1, 1, 3]; // Remove -2 and +2
+            btnValues.forEach(value => {
+                const btn = document.createElement('button');
+                btn.classList.add('btn');
+                btn.textContent = value > 0 ? "+" + value : value;
+                btn.onclick = function() {
+                    changeValue(name, value);
+                };
+                inputContainer.appendChild(btn); // Append buttons to input container
+            });
+            stat.appendChild(icon);
+            stat.appendChild(label); // Append label
+            stat.appendChild(inputContainer); // Append input container to stat
+            container.appendChild(stat);
+            // Remove additional button container
+        }
+
+        function changeValue(id, value) {
+            const input = document.getElementById(id);
+            input.value = parseInt(input.value) + value;
+        }
+
+        // Create characteristic blocks
+        createCharacteristicBlock("Уровень", "fa-level-up-alt");
+        createCharacteristicBlock("Атака", "fa-fist-raised");
+        createCharacteristicBlock("Магическая", "fa-magic");
+        createCharacteristicBlock("Dexterity", "fa-running");
+        createCharacteristicBlock("Health", "fa-heart");
+        createCharacteristicBlock("Risk", "fa-exclamation-triangle");
+        createCharacteristicBlock("Glory", "fa-star");
+    </script>
+</body>
+</html>
