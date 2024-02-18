@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dungeoneer Character Sheet</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Укажите ссылки на ваши изображения PNG -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,7 +37,6 @@
         }
 
         label {
-            display:none;
             margin-right: 10px;
         }
 
@@ -49,11 +48,11 @@
 
         input[type="number"] {
             padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    font-size: 16px;
-    margin: 5px;
-    text-align: center;
+            border-radius: 5px;
+            border: 1px solid #000;
+            font-size: 16px;
+            margin: 5px;
+            text-align: center;
             width: 100%;
         }
 
@@ -116,7 +115,7 @@
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script>
-        function createCharacteristicBlock(name, iconClass) {
+        function createCharacteristicBlock(name, imagePath) {
             const container = document.getElementById('statsContainer');
             const stat = document.createElement('div');
             stat.classList.add('stat');
@@ -124,8 +123,10 @@
             label.textContent = name + ":";
             const inputContainer = document.createElement('div');
             inputContainer.classList.add('input-container');
-            const icon = document.createElement('i');
-            icon.classList.add('icon', 'fas', iconClass);
+            const icon = document.createElement('img');
+            icon.classList.add('icon');
+            icon.src = imagePath; // Установите путь к изображению
+            icon.alt = name; // Установите альтернативный текст для изображения
             const input = document.createElement('input');
             input.setAttribute('type', 'number');
             input.setAttribute('id', name); // Set id for input element
@@ -154,13 +155,13 @@
         }
 
         // Create characteristic blocks
-        createCharacteristicBlock("Уровень", "fa-level-up-alt");
-        createCharacteristicBlock("Атака", "fa-fist-raised");
-        createCharacteristicBlock("Магическая", "fa-magic");
-        createCharacteristicBlock("Dexterity", "fa-running");
-        createCharacteristicBlock("Health", "fa-heart");
-        createCharacteristicBlock("Risk", "fa-exclamation-triangle");
-        createCharacteristicBlock("Glory", "fa-star");
+        createCharacteristicBlock("Атака", "images/risk.png");
+        createCharacteristicBlock("Магическая",  "images/risk.png"););
+        createCharacteristicBlock("Действия","images/risk.png");
+        createCharacteristicBlock("Здоровье","images/risk.png");
+        createCharacteristicBlock("Риск", "images/risk.png");
+        createCharacteristicBlock("Слава", "images/risk.png");
+       
     </script>
 </body>
 </html>
