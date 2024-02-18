@@ -140,6 +140,9 @@
         <div class="stats" id="statsContainer">
             <!-- Characteristic blocks will be inserted here -->
         </div>
+        <div class="btn-container">
+            <button class="btn reset-btn" onclick="resetValues()">Reset</button>
+        </div>
     </div>
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
@@ -209,7 +212,12 @@ function changeValue(id, value) {
     input.value = newValue;
     saveToLocalStorage(id, newValue);
 }
-
+function resetValues() {
+            // Удаляем все сохраненные значения из Local Storage
+            localStorage.clear();
+            // Перезагружаем страницу, чтобы обновить значения полей ввода
+            location.reload();
+        }
 // Создание характеристических блоков
 createCharacteristicBlock("Атака", "Images/Power.png");
 createCharacteristicBlock("Магическая",  "Images/Magic.png");
