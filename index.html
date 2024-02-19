@@ -144,6 +144,24 @@
             <button class="btn reset-btn" onclick="resetValues()">Сбросить</button>
         </div>
     </div>
+   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+<script>
+  // Инициализация Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyC1yOoCY5wIy7Jh0cQ-P-u4SiaFMMGDl3k",
+  authDomain: "dungeoneerherocalc.firebaseapp.com",
+  databaseURL: "https://dungeoneerherocalc-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "dungeoneerherocalc",
+  storageBucket: "dungeoneerherocalc.appspot.com",
+  messagingSenderId: "232528699626",
+  appId: "1:232528699626:web:3d045d0e4cc64a69cc3793"
+};
+  firebase.initializeApp(firebaseConfig);
+
+  // Получите ссылку на базу данных
+  const database = firebase.database();
+</script>
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script>
@@ -231,24 +249,6 @@ createCharacteristicBlock("Здоровье","Images/health.png");
 createCharacteristicBlock("Риск", "Images/risk.png");
 createCharacteristicBlock("Слава", "Images/slava.png");
     </script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-<script>
-  // Инициализация Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyC1yOoCY5wIy7Jh0cQ-P-u4SiaFMMGDl3k",
-  authDomain: "dungeoneerherocalc.firebaseapp.com",
-  databaseURL: "https://dungeoneerherocalc-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "dungeoneerherocalc",
-  storageBucket: "dungeoneerherocalc.appspot.com",
-  messagingSenderId: "232528699626",
-  appId: "1:232528699626:web:3d045d0e4cc64a69cc3793"
-};
-  firebase.initializeApp(firebaseConfig);
-
-  // Получите ссылку на базу данных
-  const database = firebase.database();
-</script>
-
+ 
 </body>
 </html>
