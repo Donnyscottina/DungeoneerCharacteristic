@@ -144,52 +144,28 @@
             <button class="btn reset-btn" onclick="resetValues()">Сбросить</button>
         </div>
     </div>
-   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-<script>
-  // Инициализация Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyC1yOoCY5wIy7Jh0cQ-P-u4SiaFMMGDl3k",
-  authDomain: "dungeoneerherocalc.firebaseapp.com",
-  databaseURL: "https://dungeoneerherocalc-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "dungeoneerherocalc",
-  storageBucket: "dungeoneerherocalc.appspot.com",
-  messagingSenderId: "232528699626",
-  appId: "1:232528699626:web:3d045d0e4cc64a69cc3793"
-};
-  firebase.initializeApp(firebaseConfig);
-
-  // Получите ссылку на базу данных
-  const database = firebase.database();
-</script>
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script>
         // Функция сохранения данных в Local Storage
-// Функция сохранения данных в Firebase Realtime Database
-function saveToFirebase(id, value) {
-    // Используем метод set() для сохранения данных в базе данных по пути '/characters/<uid>/<id>'
-    database.ref('characters/' + playerName + '/' + id).set(value);
+function saveToLocalStorage(id, value) {
+    localStorage.setItem(id, value);
 }
 
-// Функция загрузки данных из Firebase Realtime Database
-    function loadFromFirebase(id) {
-        // Возвращаем Promise, который загружает данные из базы данных по пути '/characters/<uid>/<id>'
-        return database.ref('characters/' + playerName + '/' + id).once('value').then(snapshot => {
-            const data = snapshot.val();
-            return data !== null ? data : 0; // Если данные не существуют, возвращаем 0
-        });
-    }
-// Функция для обновления поля ввода и сохранения данных в Firebase
-async function updateInputValue(id, value) {
+// Функция загрузки данных из Local Storage
+function loadFromLocalStorage(id) {
+    return localStorage.getItem(id);
+}
+
+// Функция для обновления поля ввода и сохранения данных
+function updateInputValue(id, value) {
     const input = document.getElementById(id);
     input.value = value;
-    // Сохраняем данные в Firebase
-    await saveToFirebase(id, value);
+    saveToLocalStorage(id, value);
 }
 
 // Функция создания характеристического блока с учетом сохраненных данных
-async function createCharacteristicBlock(name, imagePath) {
+function createCharacteristicBlock(name, imagePath) {
     const container = document.getElementById('statsContainer');
     const stat = document.createElement('div');
     stat.classList.add('stat');
@@ -204,11 +180,11 @@ async function createCharacteristicBlock(name, imagePath) {
     const input = document.createElement('input');
     input.setAttribute('type', 'number');
     input.setAttribute('id', name);
-    // Загрузка данных из Firebase
-    const savedValue = await loadFromFirebase(name);
+    // Загрузка данных из Local Storage
+    const savedValue = loadFromLocalStorage(name);
     input.setAttribute('value', savedValue ? savedValue : '0');
     input.oninput = function() {
-        // При изменении значения поля ввода, обновляем его и сохраняем в Firebase
+        // При изменении значения поля ввода, обновляем его и сохраняем в Local Storage
         updateInputValue(name, this.value);
     };
     inputContainer.appendChild(input);
@@ -230,17 +206,18 @@ async function createCharacteristicBlock(name, imagePath) {
 }
 
 // Функция изменения значения поля ввода
-async function changeValue(id, value) {
+function changeValue(id, value) {
     const input = document.getElementById(id);
     const newValue = parseInt(input.value) + value;
     input.value = newValue;
-    // Сохраняем данные в Firebase
-    await saveToFirebase(id, newValue);
+    saveToLocalStorage(id, newValue);
 }
-
-// Заменяем playerName на имя пользователя, которое он вводит в форме
-const playerName = prompt("Введите ваше имя");
-
+function resetValues() {
+            // Удаляем все сохраненные значения из Local Storage
+            localStorage.clear();
+            // Перезагружаем страницу, чтобы обновить значения полей ввода
+            location.reload();
+        }
 // Создание характеристических блоков
 createCharacteristicBlock("Атака", "Images/Power.png");
 createCharacteristicBlock("Магическая",  "Images/Magic.png");
@@ -248,7 +225,7 @@ createCharacteristicBlock("Действия","Images/Lovkost.png");
 createCharacteristicBlock("Здоровье","Images/health.png");
 createCharacteristicBlock("Риск", "Images/risk.png");
 createCharacteristicBlock("Слава", "Images/slava.png");
+
     </script>
- 
 </body>
 </html>
