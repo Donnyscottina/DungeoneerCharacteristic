@@ -173,13 +173,13 @@ function saveToFirebase(id, value) {
 }
 
 // Функция загрузки данных из Firebase Realtime Database
-function loadFromFirebase(id) {
-    // Возвращаем Promise, который загружает данные из базы данных по пути '/characters/<uid>/<id>'
-    return database.ref('characters/' + playerName + '/' + id).once('value').then(snapshot => {
-        return snapshot.val();
-    });
-}
-
+    function loadFromFirebase(id) {
+        // Возвращаем Promise, который загружает данные из базы данных по пути '/characters/<uid>/<id>'
+        return database.ref('characters/' + playerName + '/' + id).once('value').then(snapshot => {
+            const data = snapshot.val();
+            return data !== null ? data : 0; // Если данные не существуют, возвращаем 0
+        });
+    }
 // Функция для обновления поля ввода и сохранения данных в Firebase
 async function updateInputValue(id, value) {
     const input = document.getElementById(id);
