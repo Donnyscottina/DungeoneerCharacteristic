@@ -135,35 +135,79 @@
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1 class="h1" style="text-align: center;color: #cbc4c4;">Подземелье персонаж:</h1>
-        <div class="stats" id="statsContainer">
-            <!-- Characteristic blocks will be inserted here -->
-        </div>
-        <div class="btn-container">
-            <button class="btn reset-btn" onclick="resetValues()">Сбросить</button>
-        </div>
-    </div>
-
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script>
-        // Функция сохранения данных в Local Storage
-function saveToLocalStorage(id, value) {
-    localStorage.setItem(id, value);
-}
 
-// Функция загрузки данных из Local Storage
-function loadFromLocalStorage(id) {
-    return localStorage.getItem(id);
-}
+    <script type="module">
+          import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js';
+    import { getDatabase, ref, set, update, onValue } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js';
+    document.addEventListener("DOMContentLoaded", function() {
+      // Initialize Firebase
+      const firebaseConfig = {
+  apiKey: "AIzaSyC1yOoCY5wIy7Jh0cQ-P-u4SiaFMMGDl3k",
+  authDomain: "dungeoneerherocalc.firebaseapp.com",
+  databaseURL: "https://dungeoneerherocalc-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "dungeoneerherocalc",
+  storageBucket: "dungeoneerherocalc.appspot.com",
+  messagingSenderId: "232528699626",
+  appId: "1:232528699626:web:3d045d0e4cc64a69cc3793"
+};
+      firebase.initializeApp(firebaseConfig);
 
-// Функция для обновления поля ввода и сохранения данных
-function updateInputValue(id, value) {
-    const input = document.getElementById(id);
-    input.value = value;
-    saveToLocalStorage(id, value);
-}
-
+      // Now you can use firebase.database(), etc.
+      console.log("Firebase initialized");
+   
+        
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+    
+      function checkUserAndLoadData() {
+        const userName = prompt("Введите ваше имя:");
+        if (userName) {
+          database.ref('users/' + userName).once('value').then(snapshot => {
+            const userData = snapshot.val();
+            if (userData) {
+              // Подгрузка данных пользователя, если они есть
+              Object.keys(userData).forEach(key => {
+                updateInputValue(key, userData[key]);
+              });
+            } else {
+              // Создание новых данных для нового пользователя
+              createNewUser(userName);
+            }
+          });
+        }
+      }
+    
+      function createNewUser(userName) {
+        const userData = {};
+        const characteristicNames = ["Атака", "Магическая", "Действия", "Здоровье", "Риск", "Слава"];
+        characteristicNames.forEach(name => {
+          const value = prompt(`Введите значение для характеристики "${name}":`) || '0';
+          userData[name] = value;
+          updateInputValue(name, value);
+        });
+        database.ref('users/' + userName).set(userData);
+      }
+    
+      // Обновление поля ввода и сохранение данных в базе
+      function updateInputValue(id, value) {
+        const input = document.getElementById(id);
+        input.value = value;
+        saveToLocalStorage(id, value);
+        saveToDatabase(id, value);
+      }
+    
+      // Сохранение данных в базе
+      function saveToDatabase(id, value) {
+        const userName = prompt("Введите ваше имя:");
+        if (userName) {
+          const updates = {};
+          updates['/users/' + userName + '/' + id] = value;
+          database.ref().update(updates);
+        }
+      }
+    
 // Функция создания характеристического блока с учетом сохраненных данных
 function createCharacteristicBlock(name, imagePath) {
     const container = document.getElementById('statsContainer');
@@ -225,7 +269,19 @@ createCharacteristicBlock("Действия","Images/Lovkost.png");
 createCharacteristicBlock("Здоровье","Images/health.png");
 createCharacteristicBlock("Риск", "Images/risk.png");
 createCharacteristicBlock("Слава", "Images/slava.png");
-
+window.onload = checkUserAndLoadData;
+});
     </script>
+    <div class="card">
+        <h1 class="h1" style="text-align: center;color: #cbc4c4;">Подземелье персонаж:</h1>
+        <div class="stats" id="statsContainer">
+            <!-- Characteristic blocks will be inserted here -->
+        </div>
+        <div class="btn-container">
+            <button class="btn reset-btn" onclick="resetValues()">Сбросить</button>
+        </div>
+    </div>
+
+ 
 </body>
 </html>
