@@ -144,87 +144,108 @@
             <button class="btn reset-btn" onclick="resetValues()">Сбросить</button>
         </div>
     </div>
-
+<div id="diceContainer" style="text-align: center; margin-top: 20px;">
+        <i class="fas fa-dice" id="dice" style="font-size: 100px;"></i>
+    </div>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script>
+   <script>
         // Функция сохранения данных в Local Storage
-function saveToLocalStorage(id, value) {
-    localStorage.setItem(id, value);
-}
+        function saveToLocalStorage(id, value) {
+            localStorage.setItem(id, value);
+        }
 
-// Функция загрузки данных из Local Storage
-function loadFromLocalStorage(id) {
-    return localStorage.getItem(id);
-}
+        // Функция загрузки данных из Local Storage
+        function loadFromLocalStorage(id) {
+            return localStorage.getItem(id);
+        }
 
-// Функция для обновления поля ввода и сохранения данных
-function updateInputValue(id, value) {
-    const input = document.getElementById(id);
-    input.value = value;
-    saveToLocalStorage(id, value);
-}
+        // Функция для обновления поля ввода и сохранения данных
+        function updateInputValue(id, value) {
+            const input = document.getElementById(id);
+            input.value = value;
+            saveToLocalStorage(id, value);
+        }
 
-// Функция создания характеристического блока с учетом сохраненных данных
-function createCharacteristicBlock(name, imagePath) {
-    const container = document.getElementById('statsContainer');
-    const stat = document.createElement('div');
-    stat.classList.add('stat');
-    const label = document.createElement('label');
-    label.textContent = name + ":";
-    const inputContainer = document.createElement('div');
-    inputContainer.classList.add('input-container');
-    const icon = document.createElement('img');
-    icon.classList.add('icon');
-    icon.src = imagePath;
-    icon.alt = name;
-    const input = document.createElement('input');
-    input.setAttribute('type', 'number');
-    input.setAttribute('id', name);
-    // Загрузка данных из Local Storage
-    const savedValue = loadFromLocalStorage(name);
-    input.setAttribute('value', savedValue ? savedValue : '0');
-    input.oninput = function() {
-        // При изменении значения поля ввода, обновляем его и сохраняем в Local Storage
-        updateInputValue(name, this.value);
-    };
-    inputContainer.appendChild(input);
-    const btnValues = [-3, -1, 1, 3];
-    btnValues.forEach(value => {
-        const btn = document.createElement('button');
-        btn.classList.add('btn');
-        btn.textContent = value > 0 ? "+" + value : value;
-        btn.className = value > 0 ? 'positive btn' : 'negative btn';
-        btn.onclick = function() {
-            changeValue(name, value);
-        };
-        inputContainer.appendChild(btn);
-    });
-    stat.appendChild(icon);
-    stat.appendChild(label);
-    stat.appendChild(inputContainer);
-    container.appendChild(stat);
-}
+        // Функция создания характеристического блока с учетом сохраненных данных
+        function createCharacteristicBlock(name, imagePath) {
+            const container = document.getElementById('statsContainer');
+            const stat = document.createElement('div');
+            stat.classList.add('stat');
+            const label = document.createElement('label');
+            label.textContent = name + ":";
+            const inputContainer = document.createElement('div');
+            inputContainer.classList.add('input-container');
+            const icon = document.createElement('img');
+            icon.classList.add('icon');
+            icon.src = imagePath;
+            icon.alt = name;
+            const input = document.createElement('input');
+            input.setAttribute('type', 'number');
+            input.setAttribute('id', name);
+            // Загрузка данных из Local Storage
+            const savedValue = loadFromLocalStorage(name);
+            input.setAttribute('value', savedValue ? savedValue : '0');
+            input.oninput = function() {
+                // При изменении значения поля ввода, обновляем его и сохраняем в Local Storage
+                updateInputValue(name, this.value);
+            };
+            inputContainer.appendChild(input);
+            const btnValues = [-3, -1, 1, 3];
+            btnValues.forEach(value => {
+                const btn = document.createElement('button');
+                btn.classList.add('btn');
+                btn.textContent = value > 0 ? "+" + value : value;
+                btn.className = value > 0 ? 'positive btn' : 'negative btn';
+                btn.onclick = function() {
+                    changeValue(name, value);
+                };
+                inputContainer.appendChild(btn);
+            });
+            stat.appendChild(icon);
+            stat.appendChild(label);
+            stat.appendChild(inputContainer);
+            container.appendChild(stat);
+        }
 
-// Функция изменения значения поля ввода
-function changeValue(id, value) {
-    const input = document.getElementById(id);
-    const newValue = parseInt(input.value) + value;
-    input.value = newValue;
-    saveToLocalStorage(id, newValue);
-}
-function resetValues() {
+        // Функция изменения значения поля ввода
+        function changeValue(id, value) {
+            const input = document.getElementById(id);
+            const newValue = parseInt(input.value) + value;
+            input.value = newValue;
+            saveToLocalStorage(id, newValue);
+        }
+
+        function resetValues() {
             // Удаляем все сохраненные значения из Local Storage
             localStorage.clear();
             // Перезагружаем страницу, чтобы обновить значения полей ввода
             location.reload();
         }
-// Создание характеристических блоков
-createCharacteristicBlock("Атака", "Images/Power.png");
-createCharacteristicBlock("Магическая",  "Images/Magic.png");
-createCharacteristicBlock("Действия","Images/Lovkost.png");
-createCharacteristicBlock("Здоровье","Images/health.png");
-createCharacteristicBlock("Риск", "Images/risk.png");
-createCharacteristicBlock("Слава", "Images/slava.png");
+
+        // Создание характеристических блоков
+        createCharacteristicBlock("Атака", "Images/Power.png");
+        createCharacteristicBlock("Магическая",  "Images/Magic.png");
+        createCharacteristicBlock("Действия","Images/Lovkost.png");
+        createCharacteristicBlock("Здоровье","Images/health.png");
+        createCharacteristicBlock("Риск", "Images/risk.png");
+        createCharacteristicBlock("Слава", "Images/slava.png");
+
+        // Функция для генерации случайного числа от 1 до 6 (имитация броска кубика)
+        function rollDice() {
+            return Math.floor(Math.random() * 6) + 1;
+        }
+
+        // Обработчик события гироскопа
+        window.addEventListener('deviceorientation', handleOrientation);
+
+        // Обработчик события изменения ориентации устройства (гироскоп)
+        function handleOrientation(event) {
+            const diceIcon = document.getElementById('dice');
+            // Получаем угол поворота устройства по оси Z
+            const zRotation = event.alpha;
+            // Изменяем угол поворота кубика
+            diceIcon.style.transform = `rotate(${zRotation}deg)`;
+        }
 
     </script>
 </body>
